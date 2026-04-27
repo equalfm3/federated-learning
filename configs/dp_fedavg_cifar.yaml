@@ -1,0 +1,41 @@
+# DP-FedAvg on CIFAR-10 — privacy-preserving federated learning
+# Combines FedAvg with DP-SGD for formal differential privacy guarantees.
+# Uses non-IID Dirichlet partitioning to simulate realistic heterogeneity.
+
+server:
+  num_rounds: 100
+  num_clients: 20
+  clients_per_round: 10
+  server_lr: 1.0
+  seed: 42
+
+model:
+  model_type: cnn
+  input_channels: 3
+  input_size: 32
+  num_classes: 10
+  hidden_dim: 256
+
+data:
+  dataset: cifar10
+  partition_strategy: dirichlet
+  dirichlet_alpha: 0.5  # Moderate heterogeneity
+
+client:
+  local_epochs: 3
+  batch_size: 64
+  learning_rate: 0.005
+  use_dp: true
+  fedprox_mu: 0.0
+
+privacy:
+  use_dp: true
+  noise_multiplier: 1.1
+  max_grad_norm: 1.0
+  target_epsilon: 10.0
+  target_delta: 1.0e-5
+
+secure_aggregation:
+  enabled: true
+  threshold: 14  # 70% of 20 clients
+  quantize_bits: 8

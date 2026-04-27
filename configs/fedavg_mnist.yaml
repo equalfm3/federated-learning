@@ -1,0 +1,40 @@
+# FedAvg on MNIST — baseline federated learning configuration
+# Trains a simple CNN across 10 simulated clients using IID data partitioning.
+
+server:
+  num_rounds: 50
+  num_clients: 10
+  clients_per_round: 5
+  server_lr: 1.0
+  seed: 42
+
+model:
+  model_type: cnn
+  input_channels: 1
+  input_size: 28
+  num_classes: 10
+  hidden_dim: 200
+
+data:
+  dataset: mnist
+  partition_strategy: iid
+  dirichlet_alpha: null  # Not used for IID
+
+client:
+  local_epochs: 5
+  batch_size: 32
+  learning_rate: 0.01
+  use_dp: false
+  fedprox_mu: 0.0
+
+privacy:
+  use_dp: false
+  noise_multiplier: null
+  max_grad_norm: null
+  target_epsilon: null
+  target_delta: 1.0e-5
+
+secure_aggregation:
+  enabled: false
+  threshold: 7
+  quantize_bits: 0
